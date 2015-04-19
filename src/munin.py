@@ -9,6 +9,8 @@ def main():
         print 'multigraph incomfort_temp'
         print 'heater.value %s' % h.heater_temp
         print 'tap.value %s' % h.tap_temp
+        print
+        print 'multigraph incomfort_room_temp'
         print 'room.value %s' % h.room_temp
         print 'setpoint.value %s' % h.setpoint
         print
@@ -22,6 +24,11 @@ def main():
         print 'graph_category incomfort'
         print 'heater.label heater'
         print 'tap.label tap'
+        print
+        print 'multigraph incomfort_room_temp'
+        print 'graph_title incomfort room temperatures'
+        print 'graph_vlabel degrees celsius'
+        print 'graph_category incomfort'
         print 'room.label room'
         print 'setpoint.label setpoint'
         print

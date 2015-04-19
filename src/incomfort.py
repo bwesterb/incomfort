@@ -63,6 +63,10 @@ class Heater(object):
                     self._data['room_temp_set_1_msb'])
 
     @property
+    def setpoint_override(self):
+        return _lsbmsb(self._data['room_set_ovr_1_lsb'],
+                    self._data['room_set_ovr_1_msb'])
+    @property
     def display_code(self):
         return {85:  'sensortest',
                 170: 'service',
@@ -94,8 +98,9 @@ class Heater(object):
         return bool(self._data['IO'] & 4)
 
     def set(self, setpoint):
-        _set(self.gw.host, self.i,
+        self._data = _set(self.gw.host, self.i,
                     int((min(max(setpoint, 5), 30) - 5.0) * 10))
+        self.print_summary()
 
 
     def print_summary(self):
@@ -105,6 +110,7 @@ class Heater(object):
         print "Display code %s" % self.display_code
         print "Room temp.   %s" % self.room_temp
         print "Setpoint     %s" % self.setpoint
+        print "Stpt. ovrd.  %s" % self.setpoint_override
         print
         print "Burning?     %s" % self.burning
         print "Pumping?     %s" % self.pumping
