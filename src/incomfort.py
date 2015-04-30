@@ -139,7 +139,7 @@ def main():
             print " (stored in %s)" % path
     else:
         with open(path) as f:
-            host = f.read()
+            host = f.read().strip()
     # TODO have a nice UI for multiple heaters... Who has multiple heaters
     #      anyway?
     h = Heater(Gateway(host), 0)
