@@ -4,7 +4,7 @@ import sys
 
 def main():
     with open('/etc/incomfort-gateway') as f:
-        h = Heater(Gateway(f.read()), 0)
+        h = Heater(Gateway(f.read().strip()), 0)
     if len(sys.argv) == 1:
         print 'multigraph incomfort_temp'
         print 'heater.value %s' % h.heater_temp
