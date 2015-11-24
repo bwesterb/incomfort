@@ -130,6 +130,7 @@ class Gateway(object):
 def main():
     # TODO, put it here ourselves
     path = '/etc/incomfort-gateway'
+    host = None
     if not os.path.exists(path):
         path = os.path.expanduser('~/.incomfort-gateway')
         if not os.path.exists(path):
@@ -137,7 +138,7 @@ def main():
             with open(path, 'w') as f:
                 f.write(host)
             print " (stored in %s)" % path
-    else:
+    if host is None:
         with open(path) as f:
             host = f.read().strip()
     # TODO have a nice UI for multiple heaters... Who has multiple heaters
