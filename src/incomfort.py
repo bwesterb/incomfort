@@ -1,17 +1,17 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """ Python client library for the incomfort LAN2RF gateway. """
 
 import sys
 import json
 import os.path
-import httplib
+import http.client
 import argparse
 
 def _lsbmsb(lsb, msb):
     return (lsb + msb*256) / 100.0
 
 def _set(gateway, heater, setpoint):
-    conn = httplib.HTTPConnection(gateway)
+    conn = http.client.HTTPConnection(gateway)
     conn.request('GET', '/data.json?heater=%s&thermostat=0&setpoint=%s' % (
                             heater, setpoint))
     resp = conn.getresponse()
@@ -19,13 +19,13 @@ def _set(gateway, heater, setpoint):
 
 
 def _status(gateway, heater):
-    conn = httplib.HTTPConnection(gateway)
+    conn = http.client.HTTPConnection(gateway)
     conn.request('GET', '/data.json?heater=%s' % heater)
     resp = conn.getresponse()
     return json.loads(resp.read())
 
 def _heaters(gateway):
-    conn = httplib.HTTPConnection(gateway)
+    conn = http.client.HTTPConnection(gateway)
     conn.request('GET', '/heaterlist.json')
     resp = conn.getresponse()
     return json.loads(resp.read())['heaterlist']
@@ -104,18 +104,18 @@ class Heater(object):
 
 
     def print_summary(self):
-        print "Pressure     %s" % self.pressure
-        print "Heater temp. %s" % self.heater_temp
-        print "Tap temp.    %s" % self.tap_temp
-        print "Display code %s" % self.display_code
-        print "Room temp.   %s" % self.room_temp
-        print "Setpoint     %s" % self.setpoint
-        print "Stpt. ovrd.  %s" % self.setpoint_override
-        print
-        print "Burning?     %s" % self.burning
-        print "Pumping?     %s" % self.pumping
-        print "Tapping?     %s" % self.tapping
-        print "Error?       %s" % self.lockout
+        print("Pressure     %s" % self.pressure)
+        print("Heater temp. %s" % self.heater_temp)
+        print("Tap temp.    %s" % self.tap_temp)
+        print("Display code %s" % self.display_code)
+        print("Room temp.   %s" % self.room_temp)
+        print("Setpoint     %s" % self.setpoint)
+        print("Stpt. ovrd.  %s" % self.setpoint_override)
+        print()
+        print("Burning?     %s" % self.burning)
+        print("Pumping?     %s" % self.pumping)
+        print("Tapping?     %s" % self.tapping)
+        print("Error?       %s" % self.lockout)
 
 class Gateway(object):
     def __init__(self, host):
@@ -134,10 +134,10 @@ def main():
     if not os.path.exists(path):
         path = os.path.expanduser('~/.incomfort-gateway')
         if not os.path.exists(path):
-            host = raw_input("Type the IP of the LAN2RF gateway: ")
+            host = input("Type the IP of the LAN2RF gateway: ")
             with open(path, 'w') as f:
                 f.write(host)
-            print " (stored in %s)" % path
+            print(" (stored in %s)" % path)
     if host is None:
         with open(path) as f:
             host = f.read().strip()
@@ -148,25 +148,25 @@ def main():
         h.print_summary()
         return
     if sys.argv[1] == 'pressure':
-        print h.pressure; return
+        print(h.pressure); return
     if sys.argv[1] == 'heater_temp':
-        print h.heater_temp; return
+        print(h.heater_temp); return
     if sys.argv[1] == 'tap_temp':
-        print h.tap_temp; return
+        print(h.tap_temp); return
     if sys.argv[1] == 'display_code':
-        print h.display_code; return
+        print(h.display_code); return
     if sys.argv[1] == 'room_temp':
-        print h.room_temp; return
+        print(h.room_temp); return
     if sys.argv[1] == 'setpoint':
-        print h.setpoint; return
+        print(h.setpoint); return
     if sys.argv[1] == 'burning':
-        print int(h.burning); return
+        print(int(h.burning)); return
     if sys.argv[1] == 'pumping':
-        print int(h.pumping); return
+        print(int(h.pumping)); return
     if sys.argv[1] == 'tapping':
-        print int(h.tapping); return
+        print(int(h.tapping)); return
     if sys.argv[1] == 'error':
-        print int(h.error); return
+        print(int(h.error)); return
 
     if len(sys.argv) == 3 and sys.argv[1] == 'set':
         h.set(float(sys.argv[2]))
